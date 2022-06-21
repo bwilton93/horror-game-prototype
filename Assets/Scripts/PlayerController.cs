@@ -14,9 +14,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] bool lockCursor = true;
 
-    [SerializeField] GameObject flashlightLight;
-    private bool flashlightActive = false;
-
     float cameraPitch = 0.0f;
     float velocityY = 0.0f;
     CharacterController controller = null;
@@ -36,16 +33,12 @@ public class PlayerController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-
-        flashlightLight = flashlightLight.gameObject;
-        flashlightLight.SetActive(false);
     }
 
     void Update()
     {
         UpdateMouseLook();
         UpdateMovement();
-        ToggleFlashlight();
     }
 
     void UpdateMouseLook()
@@ -90,21 +83,5 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * walkSpeed + Vector3.up * velocityY; 
 
         controller.Move(velocity * Time.deltaTime);
-    }
-
-    void ToggleFlashlight()
-    {
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            flashlightActive = !flashlightActive;
-            if(!flashlightActive) {
-                Debug.Log(flashlightActive);
-                flashlightLight.SetActive(true);
-            } 
-            else 
-            {
-                flashlightLight.SetActive(false);    
-            }
-        }
     }
 }
