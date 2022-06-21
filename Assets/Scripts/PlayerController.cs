@@ -6,7 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] Transform playerCamera = null;
     [SerializeField] float mouseSensitivity = 1.2f;
-    [SerializeField] float walkSpeed = 6f;
+    [SerializeField] float walkSpeed = 4.0f;
+    [SerializeField] float sprintModifier = 2.0f;
     [SerializeField] float gravity = -25.0f;
     [SerializeField][Range(0.0f, 0.5f)] float moveSmoothTime = 0.1f;
     [SerializeField][Range(0.0f, 0.5f)] float mouseSmoothTime = 0.03f;
@@ -26,10 +27,10 @@ public class PlayerController : MonoBehaviour
     Vector2 currentMouseDelta = Vector2.zero;
     Vector2 currentMouseDeltaVelocity = Vector2.zero;
 
-    // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
         if(lockCursor) 
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -40,7 +41,6 @@ public class PlayerController : MonoBehaviour
         flashlightLight.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateMouseLook();
@@ -75,6 +75,17 @@ public class PlayerController : MonoBehaviour
         }
 
         velocityY += gravity * Time.deltaTime;
+
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            walkSpeed += sprintModifier;
+            Debug.Log("walk speed: " + walkSpeed);
+        }
+        else if(Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            walkSpeed -= sprintModifier;
+            Debug.Log("Walk speed: " + walkSpeed);
+        }
 
         Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * walkSpeed + Vector3.up * velocityY; 
 
