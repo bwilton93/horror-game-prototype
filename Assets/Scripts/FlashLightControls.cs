@@ -63,12 +63,13 @@ public class FlashLightControls : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.E))
         {
-            pickedUp = true;
+            pickedUp = !pickedUp;
         }
 
         if(pickedUp) 
         {
             transform.position = playerHand.transform.position;
+            transform.rotation = playerHand.transform.rotation;
         }
     }
 }
