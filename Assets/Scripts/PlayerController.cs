@@ -5,10 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] Transform playerCamera = null;
+    
     [SerializeField] float mouseSensitivity = 1.2f;
     [SerializeField] float walkSpeed = 4.0f;
     [SerializeField] float sprintModifier = 2.0f;
     [SerializeField] float gravity = -25.0f;
+    [SerializeField] float standHeight = 2.0f;
+    [SerializeField] float crouchHeight = 1.5f;
+
     [SerializeField][Range(0.0f, 0.5f)] float moveSmoothTime = 0.1f;
     [SerializeField][Range(0.0f, 0.5f)] float mouseSmoothTime = 0.03f;
 
@@ -39,6 +43,7 @@ public class PlayerController : MonoBehaviour
     {
         UpdateMouseLook();
         UpdateMovement();
+        PlayerCrouch();
     }
 
     void UpdateMouseLook()
@@ -83,5 +88,17 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = (transform.forward * currentDir.y + transform.right * currentDir.x) * walkSpeed + Vector3.up * velocityY; 
 
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    void PlayerCrouch()
+    {
+        if(Input.GetKey(KeyCode.LeftControl))
+        {
+            controller.height = crouchHeight;
+        }
+        else 
+        {
+            controller.height = standHeight;
+        }
     }
 }
